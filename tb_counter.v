@@ -1,52 +1,32 @@
-module tb_counter;
-
-  // Inputs
-  reg clk;
-  reg rst;
-  reg up_down;
-
-  // Output
-  wire [2:0] out;
-
-  // Instantiate the DUT (Device Under Test)
-  counter dut (
-    .clk(clk),
-    .rst(rst),
-    .up_down(up_down),
-    .out(out)
-  );
-
-  // Clock Generation: 10ns period (100 MHz)
-  always #5 clk = ~clk;
-
-  // Stimulus
+module cntr_tb ();
+  reg clk = 0, rst_, enbl; 
+  wire [2:0] count_o; 
+  
+  cntr cntr_0 (
+    		   .clk(clk), 
+               .rst_(rst_), 
+               .enbl(enbl),
+               .cntr(count_o)
+               );
+  
+  always 
+    clk = #5 ~clk; 
+  
   initial begin
-    // Initialize inputs
-    clk = 0;
-    rst = 0;
-    up_down = 0;
-
-    // Apply reset
-    #10;
-    rst = 1;
-
-    // Count up for 8 clock cycles
-    up_down = 1;
-    repeat (8) @(posedge clk);
-
-    // Count down for 4 clock cycles
-    up_down = 0;
-    repeat (4) @(posedge clk);
-
-    // Finish simulation
-    #10;
-    $finish;
-  end
-
-  // Monitor output
-  initial begin
-    $display("Time\tclk\trstn\tup_down\tout");
-    $monitor("%0t\t%b\t%b\t%b\t%0d", $time, clk, rst, up_down, out);
-  end
-
-endmodule
+    $dumpvars(1, cntr_tb); 
+    $dumpfile("cntr.vcd");
+    rst_ = 0; enbl = 1; 
+    #3;
+    rst_ = 1; enbl = 1; 
+    #4; 
+    rst_ = 0; enbl = 1; 
+    #5; 
+    rst_ = 1; enbl = 1; 
+    #5
+    rst_ = 0; enbl = 1;
+    #6 
+    rst_ = 1; enbl = 1; 
+    #100
+    $finish; 
+  end 
+endmodule 
