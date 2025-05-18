@@ -1,19 +1,12 @@
-module counter (
-    input clk,
-    input rst,
-    input up_down,
-    output reg [2:0] out
-); 
-
-always @ (posedge clk) begin
-    if (!rst)
-        out <= 0;
-    else begin
-        if (up_down)
-            out <= out + 1; 
-        else 
-            out <= out - 1; 
-    end 
-end 
-
+// Code your design here
+module cntr (input clk, rst_, enbl, 
+             output reg [2:0] cntr); 
+  
+  always @ (posedge clk or negedge rst_) begin
+    if (!rst_)
+      cntr <= 3'b0;
+  else if (enbl)
+      cntr <= cntr + 1; 
+  end 
+  
 endmodule
