@@ -2,8 +2,7 @@ module cntr_tb ();
   reg clk = 0, rst_, enbl; 
   wire [2:0] count_o; 
   
-  cntr cntr_0 (
-    		   .clk(clk), 
+  cntr cntr_0 (.clk(clk), 
                .rst_(rst_), 
                .enbl(enbl),
                .cntr(count_o)
